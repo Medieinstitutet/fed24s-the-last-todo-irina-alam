@@ -1,19 +1,31 @@
-import React from 'react';
+import { useState } from 'react';
 
-const TodoList: React.FC = () => {
-  const todos = [
-    { id: 1, task: 'Finish React assignment' },
-    { id: 2, task: 'Clean room' },
-    { id: 3, task: 'Go for a walk' },
-  ];
+const TodoList = () => {
+  const [todos, setTodos] = useState([
+    { id: 1, text: 'Finish React assignment', done: false },
+    { id: 2, text: 'Clean room', done: false },
+    { id: 3, text: 'Go for a walk', done: false },
+  ]);
+
+  const handleDelete = (id: number) => {
+    setTodos(prev =>
+      prev.map(todo =>
+        todo.id === id ? { ...todo, done: true } : todo
+      )
+    );
+  };
 
   return (
     <div>
-      <h2>Todo List</h2>
+      <h1>Todo List</h1>
       <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>{todo.task}</li>
-        ))}
+        {todos.map(todo =>
+          !todo.done ? (
+            <li key={todo.id} onClick={() => handleDelete(todo.id)} style={{ cursor: 'pointer' }}>
+              {todo.text}
+            </li>
+          ) : null
+        )}
       </ul>
     </div>
   );
